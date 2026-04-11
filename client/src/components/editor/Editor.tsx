@@ -115,14 +115,14 @@ function Editor() {
         const langExt = loadLanguage(language.toLowerCase() as LanguageName)
         if (langExt) {
             extensions.push(langExt)
-        } else {
+        } {/*else {
             toast.error(
                 "Syntax highlighting is unavailable for this language. Please adjust the editor settings; it may be listed under a different name.",
                 {
                     duration: 5000,
                 },
             )
-        }
+        }*/}
 
         setExtensions(extensions)
     }, [filteredUsers, language, handleSelectionChange])

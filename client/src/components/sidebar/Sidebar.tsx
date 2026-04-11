@@ -57,6 +57,10 @@ function Sidebar() {
                     icon={viewIcons[VIEWS.FILES]}
                 />*/}
                 <SidebarButton
+                    viewName={VIEWS.FILES}
+                    icon={viewIcons[VIEWS.FILES]}
+                />
+                <SidebarButton
                     viewName={VIEWS.CHATS}
                     icon={viewIcons[VIEWS.CHATS]}
                 />
@@ -76,6 +80,7 @@ function Sidebar() {
                     viewName={VIEWS.SETTINGS}
                     icon={viewIcons[VIEWS.SETTINGS]}
                 />*/}
+                
 
                 {/* Button to change activity state coding or drawing */}
                 <div className="flex h-fit items-center justify-center">

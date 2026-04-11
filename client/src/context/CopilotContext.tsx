@@ -22,44 +22,54 @@ const CopilotContextProvider = ({ children }: { children: ReactNode }) => {
     const [isRunning, setIsRunning] = useState<boolean>(false)
 
     const generateCode = async () => {
-        try {
-            if (input.length === 0) {
-                toast.error("Please write a prompt")
-                return
-            }
-
-            toast.loading("Generating code...")
-            setIsRunning(true)
-            const response = await axiosInstance.post("/", {
-                messages: [
-                    {
-                        role: "system",
-                        content:
-                            "You are a code generator copilot for project named Code Sync. Generate code based on the given prompt without any explanation. Return only the code, formatted in Markdown using the appropriate language syntax (e.g., js for JavaScript, py for Python). Do not include any additional text or explanations. If you don't know the answer, respond with 'I don't know'.",
-                    },
-                    {
-                        role: "user",
-                        content: input,
-                    },
-                ],
-                model: "mistral",
-                private: true,
-            })
-            if (response.data) {
-                toast.success("Code generated successfully")
-                const code = response.data
-                if (code) setOutput(code)
-            }
-            setIsRunning(false)
-            toast.dismiss()
-        } catch (error) {
-            console.error(error)
-            setIsRunning(false)
-            toast.dismiss()
-            toast.error("Failed to generate the code")
-        }
+  try {
+    if (input.length === 0) {
+      toast.error("Please write a prompt")
+      return
     }
 
+    toast.loading("Generating code...")
+    setIsRunning(true)
+
+    const response = await axiosInstance.post("", {
+      contents: [
+        {
+          parts: [
+            {
+              text: `You are a code generator copilot for a project named Code Sync.
+
+Rules:
+- Generate code only
+- No explanations
+- Return code in markdown
+- If unknown say "I don't know"
+
+Prompt: ${input}`,
+            },
+          ],
+        },
+      ],
+    })
+
+    const code =
+      response?.data?.candidates?.[0]?.content?.parts?.[0]?.text
+
+    if (code) {
+      setOutput(code)
+      toast.success("Code generated successfully")
+    } else {
+      toast.error("No code generated")
+    }
+
+    toast.dismiss()
+    setIsRunning(false)
+  } catch (error) {
+    console.error(error)
+    toast.dismiss()
+    toast.error("Failed to generate the code")
+    setIsRunning(false)
+  }
+}
     return (
         <CopilotContext.Provider
             value={{

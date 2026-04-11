@@ -1,12 +1,16 @@
 import axios, { AxiosInstance } from "axios"
 
-const pollinationsBaseUrl = "https://text.pollinations.ai"
+const geminiBaseUrl =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
 
 const instance: AxiosInstance = axios.create({
-    baseURL: pollinationsBaseUrl,
-    headers: {
-        "Content-Type": "application/json",
-    },
+  baseURL: geminiBaseUrl,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  params: {
+    key: import.meta.env.VITE_GEMINI_API_KEY,
+  },
 })
 
 export default instance
