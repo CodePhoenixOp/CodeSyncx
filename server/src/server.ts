@@ -8,8 +8,19 @@ import { USER_CONNECTION_STATUS, User } from "./types/user"
 import { Server } from "socket.io"
 import path from "path"
 import axios from "axios"
+import UserSession from "./models/UserSession"
 
 dotenv.config()
+
+import mongoose from "mongoose"
+
+mongoose.connect(process.env.MONGO_URI as string)
+.then(() => {
+    console.log("MongoDB Connected")
+})
+.catch((err) => {
+    console.error("MongoDB Error:", err)
+})
 
 
 const app = express()
@@ -104,6 +115,7 @@ io.on("connection", (socket) => {
 			typing: false,
 			socketId: socket.id,
 			currentFile: null,
+			joinTime: new Date(),
 		}
 		userSocketMap.push(user)
 		socket.join(roomId)
@@ -112,16 +124,41 @@ io.on("connection", (socket) => {
 		io.to(socket.id).emit(SocketEvent.JOIN_ACCEPTED, { user, users })
 	})
 
-	socket.on("disconnecting", () => {
-		const user = getUserBySocketId(socket.id)
-		if (!user) return
-		const roomId = user.roomId
-		socket.broadcast
-			.to(roomId)
-			.emit(SocketEvent.USER_DISCONNECTED, { user })
-		userSocketMap = userSocketMap.filter((u) => u.socketId !== socket.id)
-		socket.leave(roomId)
-	})
+	
+
+socket.on("disconnecting", async () => {
+    const user = getUserBySocketId(socket.id)
+    if (!user) return
+
+    const leaveTime = new Date()
+    const joinTime = user.joinTime || leaveTime
+
+    const duration = Math.floor((leaveTime.getTime() - new Date(joinTime).getTime()) / 1000)
+
+    const today = new Date().toISOString().split("T")[0]
+
+    try {
+        await UserSession.create({
+            username: user.username,
+            roomId: user.roomId,
+            joinTime,
+            leaveTime,
+            duration,
+            date: today
+        })
+    } catch (err) {
+        console.error("Error saving session:", err)
+    }
+
+    const roomId = user.roomId
+
+    socket.broadcast
+        .to(roomId)
+        .emit(SocketEvent.USER_DISCONNECTED, { user })
+
+    userSocketMap = userSocketMap.filter((u) => u.socketId !== socket.id)
+    socket.leave(roomId)
+})
 
 	// Handle file actions
 	socket.on(
