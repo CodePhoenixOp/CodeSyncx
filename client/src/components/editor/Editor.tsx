@@ -17,7 +17,7 @@ import CodeMirror, {
 } from "@uiw/react-codemirror"
 import { EditorView } from "@codemirror/view"
 import { useEffect, useMemo, useState, useRef, useCallback } from "react"
-import toast from "react-hot-toast"
+//import toast from "react-hot-toast"
 import { collaborativeHighlighting, updateRemoteUsers } from "./collaborativeHighlighting"
 
 function Editor() {

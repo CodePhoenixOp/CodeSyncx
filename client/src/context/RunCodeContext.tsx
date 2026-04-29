@@ -24,16 +24,16 @@ export const useRunCode = () => {
 
 /* JDoodle supported languages */
 const jdoodleLanguages = [
-{ language: "algol", version: "0", aliases: ["alg"] },
-{ language: "algol", version: "1", aliases: ["alg"] },
+{ language: "algol", version: "2.8", aliases: ["alg"] },
+{ language: "algol", version: "3", aliases: ["alg"] },
 
-{ language: "apl", version: "0", aliases: ["apl"] },
+{ language: "apl", version: "20", aliases: ["apl"] },
 
-{ language: "awk", version: "0", aliases: ["awk"] },
-{ language: "awk", version: "1", aliases: ["awk"] },
+{ language: "awk", version: "5.3.0", aliases: ["awk"] },
+{ language: "awk", version: "5.3.1", aliases: ["awk"] },
 
-{ language: "ada", version: "4", aliases: ["adb"] },
-{ language: "ada", version: "5", aliases: ["adb"] },
+{ language: "ada", version: "2012", aliases: ["adb"] },
+{ language: "ada", version: "2022", aliases: ["adb"] },
 
 { language: "gccasm", version: "3", aliases: ["asm"] },
 { language: "gccasm", version: "4", aliases: ["asm"] },
