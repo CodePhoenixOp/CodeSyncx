@@ -304,7 +304,7 @@ const RunCodeContextProvider = ({ children }: { children: ReactNode }) => {
             toast.loading("Running code...")
             setIsRunning(true)
 
-            const response = await axios.post("http://localhost:3000/run", {
+            const response = await axios.post("https://code-synx-1.onrender.com/run", {
                 script: activeFile.content,
                 stdin: input,
                 language: selectedLanguage.language,
