@@ -7,7 +7,7 @@ function CoffeeCorner() {
 
     return (
         <a
-            href="https://buymeacoffee.com/aryantyagi/"
+            href="http://attendance-dashboard-gilt.vercel.app/"
             className="github-corner"
             aria-label="Coffee Corner"
             target="_blank"
